@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>欢迎页面-X-admin2.0</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="./css/font.css">
+  <link rel="stylesheet" href="./css/xadmin.css">
+  <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript" src="./js/xadmin.js"></script>
+  <script src="../url/url.js"></script>
+  <script src="../lib/artTemplate/template.js"></script>
+  <script src="../js/jquery.pagination.js"></script>
+  <script src="../lib/jquery/jquery.cookie.js"></script>
+  <script src="../js/interceptor.js"></script>
+  <style>
+    .list>.curr {
+      background: rgb(0, 150, 136);
+      color: white;
+      border: 1px solid rgb(0, 150, 136);
+    }
+
+    .shang {
+      width: 35px;
+      height: 35px;
+      line-height: 35px;
+      text-align: center;
+      background-color: #fff;
+      border: 1px solid rgb(226, 226, 226)
+    }
+
+    .xia {
+      width: 35px;
+      height: 35px;
+      line-height: 35px;
+      text-align: center;
+      background-color: #FFF;
+      border: 1px solid rgb(226, 226, 226)
+    }
+
+    .list>li {
+      width: 35px;
+      height: 35px;
+      background-color: #fff;
+      float: left;
+      text-align: center;
+      line-height: 35px;
+      margin-left: 10px;
+      border: 1px solid rgb(226, 226, 226)
+    }
+
+    .list>li:hover {
+      cursor: pointer;
+    }
+
+    .tiaozhuan td {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="x-nav">
+
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+      href="javascript:location.replace(location.href);" title="刷新">
+      <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+  </div>
+  <div class="x-body">
+    <div class="layui-row">
+      <form class="layui-form layui-col-md12 x-so">
+        <input class="layui-input" placeholder="开始日" name="start" id="start">
+        <input class="layui-input" placeholder="截止日" name="end" id="end">
+        <input type="text" name="username" placeholder="请输入用户名" autocomplete="off" class="layui-input inp">
+        <button class="layui-btn" class="sousuo" lay-submit="" lay-filter="sreach"><i
+            class="layui-icon">&#xe615;</i></button>
+      </form>
+    </div>
+    <xblock>
+      <button class="layui-btn" onclick="x_admin_show('添加用户','./member-add.html',800,600)"><i
+          class="layui-icon"></i>添加</button>
+      <span class="x-right" style="line-height:40px"></span>
+      <button class="layui-btn " type="button" id="btnexport">
+        <i class="layui-icon layui-icon-download-circle">导出数据</i>
+      </button>
+    </xblock>
+    <table class="layui-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>学生姓名</th>
+          <th>性别</th>
+          <th>籍贯</th>
+          <th>出生日期</th>
+          <th>用户头像</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody class="biao">
+        <script type="text/html" id="art01">
+            {{each data as el index}}
+            <tr class="tiaozhuan">
+                <td>{{el.stu_id}}</td>
+                <td>{{el.stu_name}}</td>
+                <td>{{el.stu_sex}}</td>
+                <td>{{el.stu_jg}}</td>
+                <td>{{el.stu_date}}</td>
+                <td   name="{{el.stu_name}}"><img src="{{el.stu_head_img}}" alt=""></td>
+                <td>
+                  <a style="margin-left: 10px;"title="添加入学成绩"   xuehao="{{el.stu_id}}"  name="{{el.stu_name}}" class="ig"  onclick="x_admin_show('入学成绩添加','member-edit.html',800,600)" href="javascript:;" >
+                    <i class="layui-icon">&#xe638;</i>
+                  </a>
+                  <a style="margin-left: 10px;" title="添加期中成绩"    xuehao="{{el.stu_id}}"  name="{{el.stu_name}}" class="ig"  onclick="x_admin_show('期中成绩添加','grade-midterm.html',800,600)" href="javascript:;" >
+                    <i class="layui-icon">&#xe642;</i>
+                  </a>
+                  <a style="margin-left: 10px;" title="添加期末成绩"   xuehao="{{el.stu_id}}"  name="{{el.stu_name}}" class="ig"  onclick="x_admin_show('期末成绩添加','grade-end.html',800,600)" href="javascript:;" >
+                    <i class="layui-icon">&#xe647;</i>
+                  </a>
+                  <!-- <a style="margin-left: 10px;" title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
+                    <i class="layui-icon">&#xe640;</i>
+                  </a> -->
+                </td>
+                
+            </tr>
+            {{/each}}
+        </script>
+
+      </tbody>
+    </table>
+    <div class="yema" style="display: flex;justify-content: center;">
+      <div class="shang ">
+        << </div>
+          <ul class="list "></ul>
+          <div class="xia" style="margin-left: 10px;">>></div>
+      </div>
+
+
+    </div>
+    <script>
+      $(function () {
+        interceptor();
+      })
+      setInterval(function () {
+        if (localStorage.getItem('flag')) {
+          setTimeout(function () {
+            localStorage.clear();
+            location.reload();
+          }, 1000)
+        }
+      }, 1000)
+
+
+      layui.use('laydate', function () {
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+          elem: '#start' //指定元素
+        });
+
+        //执行一个laydate实例
+        laydate.render({
+          elem: '#end' //指定元素
+        });
+      });
+
+
+      /*用户-删除*/
+      function member_del(obj, id) {
+        layer.confirm('确认要删除吗？', function (index) {
+          //发异步删除数据
+          $(obj).parents("tr").remove();
+          layer.msg('已删除!', { icon: 1, time: 1000 });
+        });
+      }
+      function delAll(argument) {
+        var data = tableCheck.getData();
+        layer.confirm('确认要删除吗？' + data, function (index) {
+          //捉到所有被选中的，发异步进行删除
+          layer.msg('删除成功', { icon: 1 });
+          $(".layui-form-checked").not('.header').parents('tr').remove();
+        });
+      }
+
+      // $.ajax({
+      //   method: 'get',
+      //   url: baseUrl + "/search_info",
+      //   success: function (data) {
+      //     var dataObj = {
+      //       data: data
+      //     }
+      //     var str = template('art01', dataObj);
+      //     $(".list_i").html("");
+      //     $(".list_i").html(str);
+      //    
+      //   },
+      //   error: function (data) {
+      //     console.log(data);
+      //   }
+      // })
+
+      var biao = document.querySelector('.biao');
+      var list = document.querySelector('.list');
+      var sousuo = document.querySelector('span');
+      var inp = document.querySelector('.inp');
+
+
+      $.ajax({
+        method: 'get',
+        url: baseUrl + "/search_info",
+        success: function (data) {
+          $(".x-right").html("总共有" + data.length + "条");
+          ym(data);
+          $(".tiaozhuan").delegate('.ig', 'click', function () {
+            localStorage.clear();
+            console.log("----------");
+            var id = $(this).attr("xuehao");
+            var name = $(this).attr("name");
+            localStorage.setItem("stu_id", id);
+            localStorage.setItem("stu_name", name);
+          })
+
+          // sousuo.onclick = function () {
+          //   if (reg.test(inp.value)) {
+          //     var arr = [];
+          //     data.forEach(function (el) {
+          //       for (var key in el) {
+          //         if (el[key].indexOf(inp.value) > -1) {
+          //           // console.log(el);
+          //           arr.push(el);
+          //         }
+          //       }
+          //     })
+          //     ym(arr);
+          //   } else {
+          //     alert('请输入商品名称');
+          //   }
+          // }
+        },
+        error: function (err) {
+          console.log(err);
+        }
+      })
+      // 渲染封装
+      function xuanran(data, item, page_num, el, li_node_arr) {
+        li_node_arr.forEach(function (el) {
+          el.className = '';
+        })
+        el.className = 'curr';
+        var data_fen = data.slice(item * (page_num - 1), item * page_num);
+        var dataObj = {
+          data: data_fen
+        }
+        var str = template('art01', dataObj);
+        $(".biao").html(" ");
+        $(".biao").html(str);
+        $(".tiaozhuan").delegate('.ig', 'click', function () {
+          sessionStorage.clear();
+          console.log("----------");
+          var id = $(this).attr("xuehao");
+          var name = $(this).attr("name");
+          sessionStorage.setItem("stu_id", id);
+          sessionStorage.setItem("stu_name", name);
+        })
+      }
+      // 初始、页码点击、上下页封装
+      function ym(changdu) {
+        var item = 5;
+        var pages = Math.ceil(changdu.length / item);
+        // console.log(pages);
+        list.innerHTML = '';
+        for (var i = 0; i < pages; i++) {
+          var liNode = document.createElement('li');
+          liNode.innerText = i + 1;
+          // console.log(liNode);
+          list.appendChild(liNode)
+        }
+        var li_node_arr = document.querySelectorAll('li');
+        var page_num = 1;
+        var el = li_node_arr[0];
+        xuanran(changdu, item, page_num, el, li_node_arr)
+        // 点击
+        li_node_arr.forEach(function (el, index) {
+          el.onclick = function () {
+            var that = this;
+            var page_num = that.innerText;
+            xuanran(changdu, item, page_num, el, li_node_arr)
+          }
+        })
+        // 上一页
+
+        $(".shang").click(function () {
+          var page_num;
+          li_node_arr.forEach(function (el) {
+            if (el.className == 'curr') {
+              page_num = el.innerText;
+            }
+          })
+          if (page_num == 1) {
+            page_num = li_node_arr.length;
+          } else {
+            page_num--
+          }
+          xuanran(changdu, item, page_num, list.children[page_num - 1], li_node_arr);
+        })
+        // 下一页
+        $(".xia").click(function () {
+          var page_num;
+          li_node_arr.forEach(function (el) {
+            if (el.className == 'curr') {
+              page_num = el.innerText;
+            }
+          })
+          if (page_num == li_node_arr.length) {
+            page_num = 1;
+          } else {
+            page_num++;
+          }
+          xuanran(changdu, item, page_num, list.children[page_num - 1], li_node_arr);
+        })
+
+
+
+        // if($(this).children()[0].nodeName=='IMG'){
+        //   window.location = `./grade-start.html?stu_id=${ $(this).attr('xuehao')}&stu_name=${$(this).attr('name')}`;
+        // }
+
+      }
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" href="../lib/lib/bootstrap@3.3.4/css/bootstrap.css">
+<script src="../lib/jquery/jquery-3.2.1.js"></script>
+<link rel="stylesheet" href="./css/lunbotu.css">
+<link rel="stylesheet" href="../lib/reset.css/reset.css">
+<script src="../lib/lib/artTemplate/template.js"></script>
+<script src="../url/url.js"></script>
+
+<body>
+    <div class="content">
+        <ul class="list">
+                    <li class="current_tm"><img src="" alt=""></li>
+                    <li><img src="" alt=""></li>
+                    <li><img src="" alt=""></li>
+                    <li><img src="" alt=""></li>
+        </ul>
+        <div class="jt left"><span class="glyphicon glyphicon-chevron-left"></span></div>
+        <div class="jt right"><span class="glyphicon glyphicon-chevron-right"></span></div>
+        <ul class="dots">
+            <li class="current">1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+        </ul>
+    </div>
+    <script>
+        $.ajax({
+            method: "get",
+            url: baseUrl+"/banner",
+            success: function (data) {
+                var arr = [];
+                $.each(data.data.cartoon[0], function (key, value) {
+                    console.log(value);
+                    arr.push(`${baseUrl}${value}`)
+                })
+                $.each(arr,function(index){
+                    $(".list>li>img").eq(index).attr("src",arr[index])
+                })
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        })
+        var a = $(".list>li").length;
+        function fun(num) {
+            $(".list>li").removeClass("current_tm").eq(num).addClass("current_tm");
+            $(".dots>li").removeClass("current").eq(num).addClass("current");
+        }
+        $(".left").click(function () {
+            if (a <= 0) {
+                a = $(".list>li").length - 1;
+            } else {
+                a--;
+            }
+            fun(a);
+        })
+        $(".right").click(function () {
+            if (a >= $(".list>li").length - 1) {
+                a = 0;
+            } else {
+                a++;
+            }
+            fun(a);
+        })
+        $(".dots").delegate("li", "click", function (e) {
+            a = $(e.target).text() - 1;
+            fun(a);
+        })
+        timer = setInterval(function () {
+            if (a >= $(".list>li").length - 1) {
+                a = 0;
+            } else {
+                a++;
+            }
+            fun(a);
+        }, 1500)
+        $(".list,.dots,.jt").mouseenter(function () {
+            clearInterval(timer)
+        })
+        $(".list").mouseleave(function () {
+            timer = setInterval(function () {
+                if (a >= $(".list>li").length - 1) {
+                    a = 0;
+                } else {
+                    a++;
+                }
+                fun(a);
+            }, 1500)
+        })
+    </script>
+</body>
+
+</html>
